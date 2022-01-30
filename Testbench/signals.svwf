@@ -1,0 +1,363 @@
+
+#
+# Mnemonic Maps
+#
+mmap new  -reuse -name {Boolean as Logic} -radix %b -contents {{%c=FALSE -edgepriority 1 -shape low}
+{%c=TRUE -edgepriority 1 -shape high}}
+mmap new  -reuse -name {Example Map} -radix %x -contents {{%b=11???? -bgcolor orange -label REG:%x -linecolor yellow -shape bus}
+{%x=1F -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=2C -bgcolor red -label ERROR -linecolor white -shape EVENT}
+{%x=* -label %x -linecolor gray -shape bus}}
+
+#
+# Conditions
+#
+set expression AVC1READER_vlg_tst.i1.I_CLOCK_50
+if {[catch {condition new -name  condition -expr $expression}] != ""} {
+    condition set -using condition -expr $expression
+}
+set expression AVC1READER_vlg_tst.i1.I_CLOCK_50
+if {[catch {condition new -name  condition_2 -expr $expression}] != ""} {
+    condition set -using condition_2 -expr $expression
+}
+
+array unset createdGroup
+array set createdGroup {}
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.I_CLOCK_50}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.I_READ}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.I_RESET}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.O_SD_CLK}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.SD_CMD}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.SD_DAT[3:0]}]}
+	} ]]
+waveform hierarchy collapse $id
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.treg_SD_CMD}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.treg_SD_DAT[3:0]}]}
+	} ]]
+waveform hierarchy collapse $id
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.R_ST_INIT[6:0]}]}
+	} ]]
+waveform hierarchy expand $id
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.DATASI[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.CMDSI[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.cmdtx.R_CMDSO[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.cmdtx.romdata[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.cmdtx.load}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.CMDSO}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.cmdoe}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.cmdrx.scmdin}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.cmdrx.reset}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.cmdrx.oe}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.cmdrx.clk}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.R_ST_FS[4:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.sysres}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.sysclk}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.eofavcfnd}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.eofavc}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.avcsmctrl.avcparser.vectorfifo.empty}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.avcsmctrl.avcparser.vectorfifo.full}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.avcsmctrl.avcparser.vectorfifo.almost_empty}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.avcsmctrl.avcparser.vectorfifo.almost_full}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.datactrl.SDLNSTS[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.avcsmctrl.avcparser.R_AVCVECNTR[31:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.datatx.load}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.datatx.R_DATASO[7:0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.datatx.fifo}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.avcsmctrl.avcparser.vectorfifo.wrreq}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[1]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[2]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[3]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[4]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[5]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[6]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[7]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[8]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[9]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[10]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[12]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[11]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[13]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[14]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[15]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[16]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[17]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL[18]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[1]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[2]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[4]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[3]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[6]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[5]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[8]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[7]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[10]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[9]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[11]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[15]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[13]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[12]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[14]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[16]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[17]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.AVCPSGNL[18]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[3]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[1]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[2]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[4]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[5]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[6]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[9]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[7]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[8]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[10]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[11]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[14]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[12]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[13]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[15]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[16]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[17]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNL_IN[18]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[0]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[1]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[2]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[3]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[4]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[5]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[6]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[7]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[8]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[9]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[10]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[11]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[12]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[13]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[14]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[15]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[18]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[17]}]}
+	} ]]
+set id [waveform add -signals [subst  {
+	{[format {AVC1READER_vlg_tst.i1.SGNLOE[16]}]}
+	} ]]
+
+waveform xview limits 0 34081940000ps

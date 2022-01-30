@@ -1,0 +1,791 @@
+// Copyright (C) 2019  Intel Corporation. All rights reserved.
+// Your use of Intel Corporation's design tools, logic functions 
+// and other software and tools, and any partner logic 
+// functions, and any output files from any of the foregoing 
+// (including device programming or simulation files), and any 
+// associated documentation or information are expressly subject 
+// to the terms and conditions of the Intel Program License 
+// Subscription Agreement, the Intel Quartus Prime License Agreement,
+// the Intel FPGA IP License Agreement, or other applicable license
+// agreement, including, without limitation, that your use is for
+// the sole purpose of programming logic devices manufactured by
+// Intel and sold by Intel or its authorized distributors.  Please
+// refer to the applicable agreement for further details, at
+// https://fpgasoftware.intel.com/eula.
+
+// *****************************************************************************
+// This file contains a Verilog test bench template that is freely editable to  
+// suit user's needs .Comments are provided in each section to help the user    
+// fill out necessary details.                                                  
+// *****************************************************************************
+// Generated on "12/17/2020 13:35:56"
+                                                                                
+// Verilog Test Bench template for design : AVC1READER
+// 
+// Simulation tool : ModelSim-Altera (Verilog)
+// 
+
+`timescale 1 ns/ 10 ps
+module AVC1READER_vlg_tst(); 
+// constants                                           
+// general purpose registers
+reg eachvec;
+// test vector input registers
+reg I_CLOCK_35;
+reg I_CLOCK_140;
+reg I_CLOCK_50;
+reg I_READ;
+reg I_RESET;
+reg treg_SD_CMD;
+reg treg_DQ;
+reg [3:0] treg_SD_DAT;
+reg [127:0] treg_SGNL;
+reg _I_SD_WP;
+// wires                                               
+wire [6:0]  O_HEX0;
+wire [6:0]  O_HEX1;
+wire [6:0]  O_HEX2;
+wire [6:0]  O_HEX3;
+wire [6:0]  O_HEX4;
+wire [6:0]  O_HEX5;
+wire [6:0]  O_HEX6;
+wire [6:0]  O_HEX7;
+wire O_LCD_BLON;
+wire [7:0]  O_LCD_DATA;
+wire O_LCD_EN;
+wire O_LCD_ON;
+wire O_LCD_RS;
+wire O_LCD_RW;
+wire O_LEDONE;
+wire O_SD_CLK;
+wire [7:0]  O_TESTLEDG;
+wire [17:0]  O_TESTLEDR;
+wire SD_CMD;
+wire [3:0]  SD_DAT;
+wire [127:0]  SGNL;
+wire [12:0] O_A;
+wire [1:0] O_BA;
+wire O_SDR_CLK;
+wire O_CKE;
+wire _O_CS;
+wire _O_RAS;
+wire _O_CAS;
+wire _O_WE;
+wire [3:0] O_DQM;
+
+// assign statements (if any)                          
+assign SD_CMD = treg_SD_CMD;
+assign SD_DAT = treg_SD_DAT;
+assign SGNL = treg_SGNL;
+assign DQ = treg_DQ; 
+
+reg [47:0] SD_PACKET;
+
+parameter MBR_START = 5'h00; /// initial state after AVC1READER reset
+parameter MBR_GET_PARAM = 5'h01; /// state after init done and card select into transfer state
+parameter MBR_READ_PARAM = 5'h02; /// read MBR necessary fields in SD card state
+parameter FAT32_GET_PARAM = 5'h03; ///FAT32 sector increment and CMD17 state
+parameter FAT32_READ_PARAM = 5'h04; ///read FAT32 necessary fields state
+parameter USER_WAIT_START = 5'h06; ///waiting user press START button state
+parameter FAT_GET_PARAM = 5'h07; ///increment FAT table sector address state
+parameter FAT_READ_PARAM = 5'h08; ///read full FAT table and write it last sector 
+//(ended F0FFFFFF) into buffer state  
+parameter FAT_WRITE_PARAM = 5'h09; ///write last changed FAT table in buffer into SD card state
+parameter FAT_WRITE_ACK = 5'h0A; ///write FAT table acknowledge state
+parameter FAT_SET_PARAM_P1 = 5'h0B; ///
+parameter FAT_SET_PARAM_P2 = 5'h0C; ///
+parameter AVC_GET_DATA = 5'h0D; ///increment AVC file sector address while reading it from SD card state
+parameter AVC_READ_DATA = 5'h0E; ///read AVC 512 bytes (standart sector) data from SD card state
+parameter AVC_GET_FILE = 5'h0F; ///increment sector address in FAT files table in SD card state
+parameter AVC_READ_FILE = 5'h10; ///read FAT files table sector from SD card and find AVC file in it state
+parameter AVC_SEND_VECTOR = 5'h11; ///Send strored vectors in SDRAM to output
+parameter ERCY_SET_DATA = 5'h12; ///increment ERCY file sector address while writing ERCY data on SD card state
+parameter ERCY_WRITE_DATA = 5'h13; ///write ERCY data from buffers on SD card sectors state
+parameter ERCY_WRITE_NULL = 5'h14; ///write ERCY null last sector on SD card state
+parameter ERCY_WRITE_ACK = 5'h15; ///write ERCY sectors acknowledge state 
+parameter ERCY_SET_FILE = 5'h16; ///add ERCY file description strings into FAT files table in buffer state
+parameter ERCY_WRITE_FILE = 5'h17; ///write changed FAT files table from buffer on SD card state
+parameter USER_WAIT_NEXT = 5'h18; ///final state when all test done
+parameter ERCY_GET_FILE = 5'h19; ///increment FAT address sector while finding ERCY file record state
+parameter ERCY_READ_FILE = 5'h1A; ///read FAT files table sector and find ERCY file record state
+
+parameter CMD0	= 8'h00;	/* GO_IDLE_STATE */ //Go SD Card controller to the IDLE state
+parameter CMD2	= 8'h02; /*ALL_SEND_CID*/ //Get identification CID number state
+parameter CMD3	= 8'h03; /*SEND_RELATIVE_ADDR*/ //Ask new RCA address
+parameter CMD7 = 8'h07; /*SELECT/DESELECT_CARD*///Put in (select) or put out (deselect) card into transfer state
+parameter CMD9 = 8'h09; /*SEND_CSD*///Send CSD register from SD card state
+parameter ACMD41 = 8'h29;	/* SEND_OP_COND (SDC) *///intialization command state (HCS bit in OCR)
+parameter CMD8	= 8'h08;	/*SEND_IF_COND */ //Verify SD card interface state
+parameter CMD13 = 8'h0D; /*SEND_STATUS/SEND_TASK_STATUS*/
+parameter CMD17 = 8'h11;	/* READ_SINGLE_BLOCK */ ///read single 512 byte (standart) block from SD card state
+parameter CMD18 = 8'h12; /*READ_MULTIPLE_BLOCK*/ ///not used state in this version
+parameter CMD24 =	8'h18;	/* WRITE_BLOCK */ ///not used state in this version
+parameter CMD55 =	8'h37;	/* APP_CMD */ ///
+parameter CMD23 = 8'h17; /*SET_BLOCK_COUNT*/ ///not used state in this version
+parameter CMD12 = 8'h0C; /*STOP_TRANSMISSION*/ ///not used state in this version
+parameter R7 = 8'h3B; ///48 bits response R7 from SD card state
+parameter R3 = 8'h3C; ///OCR register 48 bits response from SD card state
+parameter R1 = 8'h3D; ///48 bits normal response from SD card state
+parameter R2 = 8'h3E; ///136 bits response CID and CSD registers from SD card state
+parameter R6 = 8'h3F; /// 48 bits public RCA address response state 
+parameter STAND_BY_STATE = 8'h77; ///SD card in stand by state
+parameter DATA_RECEIVE_STATE = 8'h78; ///SD card in data receiving state
+parameter DATA_SEND_STATE = 8'h79; ///SD card in data sending state
+parameter DATA_TRANSFER_STATE = 8'h7A; ///SD card in data transfer state
+parameter FIRST_ACMD41 = 8'h7B; ///First appear of ACMD41 on CMD line state
+parameter EXIT = 8'h7C; ///initialization of SD card FAIL
+parameter POWER_UP = 8'h7E; ///Power-up state after reset
+parameter START_INIT = 8'h7F; ///Start init state after power-up 
+
+// assign statements (if any)                          
+assign SD_CMD = treg_SD_CMD;
+assign SD_DAT = treg_SD_DAT;
+
+assign i1.clk = I_CLOCK_35;
+
+integer avc_file; // file handler
+integer scan_file; // file handler
+integer mbr_file;
+integer fat32_file;
+integer fatft_file;
+integer fat_file;
+integer ercy_file;
+
+reg [7:0] data_byte;
+
+reg [7:0] mem [0:15];
+
+parameter c_ROWS = 8;
+parameter c_COLS = 16;
+reg [15:0]  r_Image_Raw[0:c_ROWS-1][0:c_COLS-1];
+reg r16;
+
+AVC1READER i1 (
+// port map - connection between master ports and signals/registers   
+	.I_CLOCK_50(I_CLOCK_50),
+	.I_CLOCK_35(I_CLOCK_35),
+	.I_CLOCK_140(I_CLOCK_140),
+	.I_READ(I_READ),
+	.I_RESET(I_RESET),
+	.O_HEX0(O_HEX0),
+	.O_HEX1(O_HEX1),
+	.O_HEX2(O_HEX2),
+	.O_HEX3(O_HEX3),
+	.O_HEX4(O_HEX4),
+	.O_HEX5(O_HEX5),
+	.O_HEX6(O_HEX6),
+	.O_HEX7(O_HEX7),
+	.O_LCD_BLON(O_LCD_BLON),
+	.O_LCD_DATA(O_LCD_DATA),
+	.O_LCD_EN(O_LCD_EN),
+	.O_LCD_ON(O_LCD_ON),
+	.O_LCD_RS(O_LCD_RS),
+	.O_LCD_RW(O_LCD_RW),
+	.O_LEDONE(O_LEDONE),
+	.O_SD_CLK(O_SD_CLK),
+	.O_TESTLEDG(O_TESTLEDG),
+	.O_TESTLEDR(O_TESTLEDR),
+	.SD_CMD(SD_CMD),
+	.SD_DAT(SD_DAT),
+	.SGNL(SGNL),
+	._I_SD_WP(_I_SD_WP),
+	.DQ(DQ),
+	.O_A(O_A),
+	.O_BA(O_BA),
+	.O_SDR_CLK(O_SDR_CLK),
+	.O_CKE(O_CKE),
+	._O_CS(_O_CS),
+	._O_RAS(_O_RAS),
+	._O_CAS(_O_CAS),
+	._O_WE(_O_WE),
+	.O_DQM(O_DQM)
+);
+
+always
+    #14 I_CLOCK_35 = ~I_CLOCK_35;
+
+always
+	 #3.5 I_CLOCK_140 = ~I_CLOCK_140;
+
+//R1 Response
+always
+begin
+	 @(posedge i1.R_ST_INIT == R1 & i1.R_ST_FS != ERCY_WRITE_DATA & i1.R_ST_FS != ERCY_WRITE_ACK & i1.R_ST_FS != FAT_WRITE_ACK)
+    //@(negedge i1.R_PAUSEINTVL)
+	 @(posedge O_SD_CLK)
+	 #600
+	//CMD8 RESP
+   sd_cmd_send_byte(8'h40);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h09);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h01);
+   sd_cmd_send_byte(8'hFF);
+end
+
+always
+begin
+	 @(posedge i1.R_ST_INIT == R1 & (i1.R_ST_FS == ERCY_WRITE_ACK | i1.R_ST_FS == FAT_WRITE_ACK) & !treg_SD_DAT[0])
+	 @(posedge O_SD_CLK)
+	 #600
+	//RESP
+   sd_cmd_send_byte(8'h4D);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h0E);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h01);
+   sd_cmd_send_byte(8'hFF);
+end
+
+always
+begin
+	 @(posedge i1.R_ST_INIT == R1 & (i1.R_ST_FS == ERCY_WRITE_ACK | i1.R_ST_FS == FAT_WRITE_ACK) & treg_SD_DAT[0])
+	 @(posedge O_SD_CLK)
+	 #600
+	//RESP
+   sd_cmd_send_byte(8'h4D);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h09);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h01);
+   sd_cmd_send_byte(8'hFF);
+end
+
+always
+begin
+	@(posedge i1.R_ST_FS == ERCY_WRITE_ACK | i1.R_ST_FS == FAT_WRITE_ACK)
+	treg_SD_DAT[0] <= 1'b1;
+	@(negedge O_SD_CLK)
+	treg_SD_DAT[0] <= 1'b0;
+	@(negedge O_SD_CLK)
+	treg_SD_DAT[0] <= 1'b1;
+	@(negedge O_SD_CLK)
+	treg_SD_DAT[0] <= 1'b0;
+	#50000
+	treg_SD_DAT[0] <= 1'b1;
+end
+
+/*always
+begin
+	@(posedge i1.R_ST_FS == AVC_SEND_VECTOR)
+		sdram_burst_word();
+end*/
+
+
+always
+begin
+	@(negedge i1.R_ST_FS == ERCY_WRITE_DATA & i1.datatx.fifo & i1.datatx.load)
+	@(posedge O_SD_CLK)
+	if(i1.datatx.R_DATASO != 8'hFE)
+		$fwrite(ercy_file,"%c",i1.datatx.R_DATASO); 
+end
+
+always
+begin
+	@(posedge i1.R_ST_FS == ERCY_WRITE_DATA | i1.R_ST_FS == ERCY_WRITE_NULL | i1.R_ST_FS == FAT_WRITE_PARAM | i1.R_ST_FS == ERCY_WRITE_FILE)
+	treg_SD_DAT[0] <= 1'bz;
+end
+
+always
+begin
+	@(posedge i1.R_ST_INIT == DATA_TRANSFER_STATE)
+	treg_SD_CMD <= 1'bz;
+end
+
+always
+begin
+	@(posedge i1.R_ST_INIT == CMD13)
+	treg_SD_CMD <= 1'bz;
+end
+
+///R2 Response
+always
+begin
+	 @(posedge i1.R_ST_INIT == R2)
+    //@(negedge i1.R_PAUSEINTVL)
+	 @(posedge O_SD_CLK)
+	 #600
+   sd_cmd_send_byte(8'h3F);
+   sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'hAA);
+	sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'hAA);
+	sd_cmd_send_byte(8'hAA);
+	sd_cmd_send_byte(8'hAA);
+	sd_cmd_send_byte(8'hAA);
+	sd_cmd_send_byte(8'hAA);
+	sd_cmd_send_byte(8'hAA);
+	sd_cmd_send_byte(8'h01);
+   sd_cmd_send_byte(8'hFF);
+end
+
+//R3 Response
+always
+begin
+	 @(posedge i1.R_ST_INIT == R3)
+    //@(negedge i1.R_PAUSEINTVL)
+	 @(posedge O_SD_CLK)
+	 #600
+   sd_cmd_send_byte(8'h3F);
+   sd_cmd_send_byte(8'hC0);
+   sd_cmd_send_byte(8'h1F);
+   sd_cmd_send_byte(8'hF0);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'hFF);
+   sd_cmd_send_byte(8'hFF);
+end
+
+//R6 Response
+always
+begin
+	 @(posedge i1.R_ST_INIT == R6)
+    //@(negedge i1.R_PAUSEINTVL)
+	 @(posedge O_SD_CLK)
+	 #600
+   sd_cmd_send_byte(8'h02);
+   sd_cmd_send_byte(8'hA0);
+   sd_cmd_send_byte(8'hA0);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h01);
+   sd_cmd_send_byte(8'hFF);
+end
+
+///R7 Response
+always
+begin
+	 @(posedge i1.R_ST_INIT == R7)
+    //@(negedge i1.R_PAUSEINTVL)
+	 @(posedge O_SD_CLK)
+	 #600
+	//CMD8 RESP
+   sd_cmd_send_byte(8'h08);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h00);
+   sd_cmd_send_byte(8'h01);
+   sd_cmd_send_byte(8'hAA);
+   sd_cmd_send_byte(8'h87);
+   sd_cmd_send_byte(8'hFF);
+end
+
+//pullup(SD_CMD);
+
+integer j;
+reg [7:0] memory [0:15];
+
+initial                                                
+begin       
+
+	for (j=0; j<16; j=j+1) 
+	begin
+		memory[j] = j;
+	end
+	
+	$display("loading rom");
+	I_CLOCK_35 = 0; 
+	I_CLOCK_140 = 0;
+	I_RESET = 0;
+	I_READ = 1;
+	treg_SD_CMD = 0;
+	treg_DQ = 0;
+	treg_SD_DAT = 4'hF;
+	_I_SD_WP = 0;  
+	 #5000
+	 I_RESET <= 0;
+	 #1000
+	 I_RESET <= 1;
+	 #5000
+	 I_RESET <= 0;
+	 #2000
+	 I_RESET <= 1;
+    treg_SD_CMD = 1;
+	 treg_SD_DAT = 4'hF;
+	 treg_SGNL = 0;
+	 treg_SD_CMD = 1'bz;
+	 treg_SD_DAT = 4'hz;
+	 treg_SGNL = 128'hz;
+	 main();	
+// code that executes only once                        
+// insert code here --> begin                          
+                                                       
+// --> end                                             
+$display("Running testbench");                       
+end   
+
+task avc_open_file();
+begin
+  avc_file = $fopen("TEST.avc", "rb+");
+  if (avc_file == 0) 
+  begin
+    $display("data_file handle was NULL");
+    $finish;
+	end
+end
+endtask  
+
+task mbr_open_file();
+begin
+  mbr_file = $fopen("MBR.bin", "rb+");
+  if (mbr_file == 0) 
+  begin
+    $display("data_file handle was NULL");
+    $finish;
+	end
+end
+endtask   
+
+task fat32_open_file();
+begin
+  fat32_file = $fopen("FAT32.bin", "rb+");
+  if (fat32_file == 0) 
+  begin
+    $display("data_file handle was NULL");
+    $finish;
+	end
+end
+endtask
+
+task fatft_open_file();
+begin
+  fatft_file = $fopen("FATFT.bin", "rb+");
+  if (fatft_file == 0) 
+  begin
+    $display("data_file handle was NULL");
+    $finish;
+	end
+end
+endtask
+
+task fat_open_file();
+begin
+  fat_file = $fopen("FAT.bin", "rb+");
+  if (fat_file == 0) 
+  begin
+    $display("data_file handle was NULL");
+    $finish;
+	end
+end
+endtask
+
+task ercy_open_file();
+begin
+	ercy_file = $fopen("E000000X.erc","w");
+end
+endtask
+
+task main();
+integer i,r,c,f;
+begin
+	 //MBR DATA
+	@(posedge (i1.R_ST_FS == MBR_READ_PARAM & i1.R_ST_INIT == R1))
+	@(posedge O_SD_CLK)
+	#3000
+	mbr_open_file();
+	#3000
+	if (!$feof(mbr_file)) 
+	begin
+		sd_dat0_send_byte(8'hFE);
+		for(i = 0; i < 512; i=i+1)
+		begin
+			data_byte = $fgetc(mbr_file);
+			sd_dat0_send_byte(data_byte);
+		end
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'hFF);
+	end
+	
+	//FAT32 DATA
+	@(posedge (i1.R_ST_FS == FAT32_READ_PARAM & i1.R_ST_INIT == DATA_TRANSFER_STATE))
+	@(posedge O_SD_CLK)	
+	#3000
+	fat32_open_file();
+	#3000
+	if (!$feof(fat32_file)) 
+	begin
+		sd_dat0_send_byte(8'hFE);
+		for(i = 0; i < 512; i=i+1)
+		begin
+			data_byte = $fgetc(fat32_file);
+			sd_dat0_send_byte(data_byte);
+		end
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'hFF);
+	end
+	
+	//FAT FILE TABLE DATA
+	@(posedge (i1.R_ST_FS == ERCY_READ_FILE & i1.R_ST_INIT == DATA_TRANSFER_STATE))
+	@(posedge O_SD_CLK)	
+	#3000
+	fatft_open_file();
+	#3000
+	if (!$feof(fatft_file)) 
+	begin
+		sd_dat0_send_byte(8'hFE);
+		for(i = 0; i < 512; i=i+1)
+		begin
+			data_byte = $fgetc(fatft_file);
+			sd_dat0_send_byte(data_byte);
+		end
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'hFF);
+	end
+	
+	@(posedge (i1.R_ST_FS == AVC_READ_FILE & i1.R_ST_INIT == DATA_TRANSFER_STATE))
+	@(posedge O_SD_CLK)	
+	#3000
+	$rewind(fatft_file);
+	#3000
+	if (!$feof(fatft_file)) 
+	begin
+		sd_dat0_send_byte(8'hFE);
+		for(i = 0; i < 512; i=i+1)
+		begin
+			data_byte = $fgetc(fatft_file);
+			sd_dat0_send_byte(data_byte);
+		end
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'hFF);
+	end
+	
+	//WAIT FOR USER BUTTON
+	@(posedge (i1.R_ST_FS == USER_WAIT_START & i1.R_ST_INIT == DATA_TRANSFER_STATE))
+	@(posedge O_SD_CLK)	
+	#3000
+	I_READ = 0;
+	#3000
+	I_READ = 1;
+	fat_open_file();
+	avc_open_file();
+	ercy_open_file();
+	@(posedge i1.eofavcfnd)
+	$display("eofavcfnd done!");
+	$rewind(avc_file);
+end
+endtask
+
+task fgprm_callback();
+integer i,r,c,f;
+begin
+	@(posedge (i1.R_ST_FS == FAT_READ_PARAM & i1.R_ST_INIT == DATA_TRANSFER_STATE))
+	@(posedge O_SD_CLK)	
+	#3000
+	/////
+	#3000
+	if (!$feof(fat_file)) 
+	begin
+		sd_dat0_send_byte(8'hFE);
+		for(i = 0; i < 512; i=i+1)
+		begin
+			data_byte = $fgetc(fat_file);
+			sd_dat0_send_byte(data_byte);
+		end
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'hFF);
+	end
+end
+endtask
+
+task avcrd_callback();
+integer i,r,c,f;
+begin
+	@(posedge (i1.R_ST_FS == AVC_READ_DATA & i1.R_ST_INIT == DATA_TRANSFER_STATE))
+	@(posedge O_SD_CLK)	
+	#3000
+	////
+	#3000
+	if(i1.eofavcfnd)
+	begin
+		sd_dat0_send_byte(8'hFE);
+		for(i = 0; i < 512; i=i+1)
+		begin
+			if (!$feof(avc_file)) 
+			begin
+				data_byte = $fgetc(avc_file);
+				sd_dat0_send_byte(data_byte);
+			end
+			else
+			begin
+				data_byte = 0;
+				sd_dat0_send_byte(data_byte);
+			end
+		end
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'hFF);
+		treg_SD_DAT[0] <= 1'bz;
+	end
+	else
+	begin
+		sd_dat0_send_byte(8'hFE);
+		for(i = 0; i < 512; i=i+1)
+		begin
+			if (!$feof(avc_file)) 
+			begin
+				data_byte = $fgetc(avc_file);
+				sd_dat0_send_byte(data_byte);
+			end
+			else
+			begin
+				data_byte = 0;
+				sd_dat0_send_byte(data_byte);
+			end
+		end
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'h01);//CRC16
+		sd_dat0_send_byte(8'hFF);
+		treg_SD_DAT[0] <= 1'bz;
+	end
+end
+endtask
+
+always
+begin
+	fgprm_callback();
+end
+
+always
+begin
+	avcrd_callback();
+end
+
+/*task sdram_burst_word(input [31:0] word);
+begin
+	 @(posedge O_SDR_CLK)
+    treg_SD_CMD <= byte[31];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[30];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[29];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[28];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[27];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[26];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[25];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[24];
+	 
+	 @(posedge O_SDR_CLK)
+    treg_SD_CMD <= byte[23];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[22];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[21];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[20];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[19];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[18];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[17];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[16];
+	 
+	 @(posedge O_SDR_CLK)
+    treg_SD_CMD <= byte[15];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[14];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[13];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[12];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[11];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[10];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[9];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[8];
+	 
+	 @(posedge O_SDR_CLK)
+    treg_SD_CMD <= byte[7];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[6];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[5];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[4];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[3];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[2];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[1];
+	 @(posedge O_SDR_CLK)
+	 treg_SD_CMD <= byte[0];
+end
+endtask*/
+
+task sd_cmd_send_byte(input [7:0] byte); 
+begin
+    @(posedge O_SD_CLK)
+    treg_SD_CMD <= byte[7];
+	 @(posedge O_SD_CLK)
+	 treg_SD_CMD <= byte[6];
+	 @(posedge O_SD_CLK)
+	 treg_SD_CMD <= byte[5];
+	 @(posedge O_SD_CLK)
+	 treg_SD_CMD <= byte[4];
+	 @(posedge O_SD_CLK)
+	 treg_SD_CMD <= byte[3];
+	 @(posedge O_SD_CLK)
+	 treg_SD_CMD <= byte[2];
+	 @(posedge O_SD_CLK)
+	 treg_SD_CMD <= byte[1];
+	 @(posedge O_SD_CLK)
+	 treg_SD_CMD <= byte[0];
+end
+endtask
+
+task sd_dat0_send_byte(input [7:0] byte); 
+begin
+    @(posedge O_SD_CLK)
+    treg_SD_DAT[0] <= byte[7];
+	 @(posedge O_SD_CLK)
+	 treg_SD_DAT[0] <= byte[6];
+	 @(posedge O_SD_CLK)
+	 treg_SD_DAT[0] <= byte[5];
+	 @(posedge O_SD_CLK)
+	 treg_SD_DAT[0] <= byte[4];
+	 @(posedge O_SD_CLK)
+	 treg_SD_DAT[0] <= byte[3];
+	 @(posedge O_SD_CLK)
+	 treg_SD_DAT[0] <= byte[2];
+	 @(posedge O_SD_CLK)
+	 treg_SD_DAT[0] <= byte[1];
+	 @(posedge O_SD_CLK)
+	 treg_SD_DAT[0] <= byte[0];
+end
+endtask
+                                            
+always                                                 
+// optional sensitivity list                           
+// @(event1 or event2 or .... eventn)                  
+begin                                                  
+// code executes for every event on sensitivity list   
+// insert code here --> begin                          
+                                                       
+@eachvec;                                              
+// --> end                                             
+end                                                    
+endmodule
+

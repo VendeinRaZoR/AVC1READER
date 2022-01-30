@@ -1,0 +1,398 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2019  Intel Corporation. All rights reserved.
+# Your use of Intel Corporation's design tools, logic functions 
+# and other software and tools, and any partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Intel Program License 
+# Subscription Agreement, the Intel Quartus Prime License Agreement,
+# the Intel FPGA IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Intel and sold by Intel or its authorized distributors.  Please
+# refer to the applicable agreement for further details, at
+# https://fpgasoftware.intel.com/eula.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 19.1.0 Build 670 09/22/2019 SJ Standard Edition
+# Date created = 10:55:26  August 10, 2020
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		AVC1READER_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Altera recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone IV E"
+set_global_assignment -name DEVICE EP4CE115F29C7
+set_global_assignment -name TOP_LEVEL_ENTITY AVC1READER
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 19.1.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "10:55:26  AUGUST 10, 2020"
+set_global_assignment -name LAST_QUARTUS_VERSION "19.1.0 Standard Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 1
+set_global_assignment -name NOMINAL_CORE_SUPPLY_VOLTAGE 1.2V
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
+set_global_assignment -name EDA_TIME_SCALE "1 ns" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_timing
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name ENABLE_OCT_DONE OFF
+set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
+set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
+set_global_assignment -name USE_CONFIGURATION_DEVICE OFF
+set_global_assignment -name CRC_ERROR_OPEN_DRAIN OFF
+set_global_assignment -name RESERVE_ALL_UNUSED_PINS_WEAK_PULLUP "AS INPUT TRI-STATED"
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
+set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
+set_location_assignment PIN_Y2 -to I_CLOCK_50
+set_location_assignment PIN_AE13 -to O_SD_CLK
+set_location_assignment PIN_AD14 -to SD_CMD
+set_location_assignment PIN_AE14 -to SD_DAT[0]
+set_location_assignment PIN_AF14 -to _I_SD_WP
+set_location_assignment PIN_AF13 -to SD_DAT[1]
+set_location_assignment PIN_AB14 -to SD_DAT[2]
+set_location_assignment PIN_AC14 -to SD_DAT[3]
+set_location_assignment PIN_E22 -to O_TESTLEDG[1]
+set_location_assignment PIN_E25 -to O_TESTLEDG[2]
+set_location_assignment PIN_E24 -to O_TESTLEDG[3]
+set_location_assignment PIN_H21 -to O_TESTLEDG[4]
+set_location_assignment PIN_G20 -to O_TESTLEDG[5]
+set_location_assignment PIN_G22 -to O_TESTLEDG[6]
+set_location_assignment PIN_G21 -to O_TESTLEDG[7]
+set_location_assignment PIN_G19 -to O_TESTLEDR[0]
+set_location_assignment PIN_F19 -to O_TESTLEDR[1]
+set_location_assignment PIN_E19 -to O_TESTLEDR[2]
+set_location_assignment PIN_F21 -to O_TESTLEDR[3]
+set_location_assignment PIN_F18 -to O_TESTLEDR[4]
+set_location_assignment PIN_E18 -to O_TESTLEDR[5]
+set_location_assignment PIN_E21 -to O_TESTLEDG[0]
+set_location_assignment PIN_H19 -to O_TESTLEDR[7]
+set_location_assignment PIN_J17 -to O_TESTLEDR[8]
+set_location_assignment PIN_G17 -to O_TESTLEDR[9]
+set_location_assignment PIN_J15 -to O_TESTLEDR[10]
+set_location_assignment PIN_H16 -to O_TESTLEDR[11]
+set_location_assignment PIN_J16 -to O_TESTLEDR[12]
+set_location_assignment PIN_H17 -to O_TESTLEDR[13]
+set_location_assignment PIN_F15 -to O_TESTLEDR[14]
+set_location_assignment PIN_G15 -to O_TESTLEDR[15]
+set_location_assignment PIN_G16 -to O_TESTLEDR[16]
+set_location_assignment PIN_H15 -to O_TESTLEDR[17]
+set_location_assignment PIN_J19 -to O_TESTLEDR[6]
+set_location_assignment PIN_R24 -to I_RESET
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to I_CLOCK_50
+set_global_assignment -name ENABLE_SIGNALTAP OFF
+set_global_assignment -name USE_SIGNALTAP_FILE output_files/stp2.stp
+set_location_assignment PIN_N21 -to I_READ
+set_global_assignment -name TIMING_ANALYZER_MULTICORNER_ANALYSIS ON
+set_global_assignment -name NUM_PARALLEL_PROCESSORS ALL
+set_location_assignment PIN_G18 -to O_HEX0[0]
+set_location_assignment PIN_F22 -to O_HEX0[1]
+set_location_assignment PIN_E17 -to O_HEX0[2]
+set_location_assignment PIN_L26 -to O_HEX0[3]
+set_location_assignment PIN_L25 -to O_HEX0[4]
+set_location_assignment PIN_J22 -to O_HEX0[5]
+set_location_assignment PIN_H22 -to O_HEX0[6]
+set_location_assignment PIN_M24 -to O_HEX1[0]
+set_location_assignment PIN_Y22 -to O_HEX1[1]
+set_location_assignment PIN_W21 -to O_HEX1[2]
+set_location_assignment PIN_W22 -to O_HEX1[3]
+set_location_assignment PIN_W25 -to O_HEX1[4]
+set_location_assignment PIN_U23 -to O_HEX1[5]
+set_location_assignment PIN_U24 -to O_HEX1[6]
+set_location_assignment PIN_AA25 -to O_HEX2[0]
+set_location_assignment PIN_AA26 -to O_HEX2[1]
+set_location_assignment PIN_Y25 -to O_HEX2[2]
+set_location_assignment PIN_W26 -to O_HEX2[3]
+set_location_assignment PIN_Y26 -to O_HEX2[4]
+set_location_assignment PIN_W27 -to O_HEX2[5]
+set_location_assignment PIN_W28 -to O_HEX2[6]
+set_location_assignment PIN_V21 -to O_HEX3[0]
+set_location_assignment PIN_U21 -to O_HEX3[1]
+set_location_assignment PIN_AB20 -to O_HEX3[2]
+set_location_assignment PIN_AA21 -to O_HEX3[3]
+set_location_assignment PIN_AD24 -to O_HEX3[4]
+set_location_assignment PIN_AF23 -to O_HEX3[5]
+set_location_assignment PIN_Y19 -to O_HEX3[6]
+set_location_assignment PIN_AB19 -to O_HEX4[0]
+set_location_assignment PIN_AA19 -to O_HEX4[1]
+set_location_assignment PIN_AG21 -to O_HEX4[2]
+set_location_assignment PIN_AH21 -to O_HEX4[3]
+set_location_assignment PIN_AE19 -to O_HEX4[4]
+set_location_assignment PIN_AF19 -to O_HEX4[5]
+set_location_assignment PIN_AE18 -to O_HEX4[6]
+set_location_assignment PIN_AD18 -to O_HEX5[0]
+set_location_assignment PIN_AC18 -to O_HEX5[1]
+set_location_assignment PIN_AB18 -to O_HEX5[2]
+set_location_assignment PIN_AH19 -to O_HEX5[3]
+set_location_assignment PIN_AG19 -to O_HEX5[4]
+set_location_assignment PIN_AF18 -to O_HEX5[5]
+set_location_assignment PIN_AH18 -to O_HEX5[6]
+set_location_assignment PIN_AA17 -to O_HEX6[0]
+set_location_assignment PIN_AB16 -to O_HEX6[1]
+set_location_assignment PIN_AA16 -to O_HEX6[2]
+set_location_assignment PIN_AB17 -to O_HEX6[3]
+set_location_assignment PIN_AB15 -to O_HEX6[4]
+set_location_assignment PIN_AA15 -to O_HEX6[5]
+set_location_assignment PIN_AC17 -to O_HEX6[6]
+set_location_assignment PIN_AD17 -to O_HEX7[0]
+set_location_assignment PIN_AE17 -to O_HEX7[1]
+set_location_assignment PIN_AG17 -to O_HEX7[2]
+set_location_assignment PIN_AH17 -to O_HEX7[3]
+set_location_assignment PIN_AF17 -to O_HEX7[4]
+set_location_assignment PIN_AG18 -to O_HEX7[5]
+set_location_assignment PIN_AA14 -to O_HEX7[6]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX0[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX0[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX0[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX0[4]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX0[5]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX0[6]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX1[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX1[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX1[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX1[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX1[4]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX1[5]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX1[6]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX2[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX2[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX2[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX2[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX2[4]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX2[5]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX2[6]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX3[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX3[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX3[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX3[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX3[4]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX3[5]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX3[6]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX4[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX4[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX4[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX4[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX4[4]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX4[5]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX4[6]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX5[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX5[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX5[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX5[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX5[4]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX5[5]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX5[6]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX6[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX6[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX6[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX6[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX6[4]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX6[5]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX6[6]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX7[0]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX7[1]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX7[2]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX7[3]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX7[4]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX7[5]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX7[6]
+set_instance_assignment -name IO_STANDARD "2.5 V" -to O_HEX0[0]
+set_location_assignment PIN_L6 -to O_LCD_BLON
+set_location_assignment PIN_L3 -to O_LCD_DATA[0]
+set_location_assignment PIN_L1 -to O_LCD_DATA[1]
+set_location_assignment PIN_L2 -to O_LCD_DATA[2]
+set_location_assignment PIN_K7 -to O_LCD_DATA[3]
+set_location_assignment PIN_K1 -to O_LCD_DATA[4]
+set_location_assignment PIN_K2 -to O_LCD_DATA[5]
+set_location_assignment PIN_M3 -to O_LCD_DATA[6]
+set_location_assignment PIN_M5 -to O_LCD_DATA[7]
+set_location_assignment PIN_L4 -to O_LCD_EN
+set_location_assignment PIN_L5 -to O_LCD_ON
+set_location_assignment PIN_M2 -to O_LCD_RS
+set_location_assignment PIN_M1 -to O_LCD_RW
+set_location_assignment PIN_F17 -to O_LEDONE
+set_location_assignment PIN_Y16 -to SGNL[1] -comment GPIO_5
+set_location_assignment PIN_AD21 -to SGNL[2] -comment GPIO_6
+set_location_assignment PIN_AE16 -to SGNL[3] -comment GPIO_7
+set_location_assignment PIN_AD15 -to SGNL[4] -comment GPIO_8
+set_location_assignment PIN_AE15 -to SGNL[5] -comment GPIO_9
+set_location_assignment PIN_AC19 -to SGNL[6] -comment GPIO_10
+set_location_assignment PIN_AF16 -to SGNL[7] -comment GPIO_11
+set_location_assignment PIN_AD19 -to SGNL[8] -comment GPIO_12
+set_location_assignment PIN_AF15 -to SGNL[9] -comment GPIO_13
+set_location_assignment PIN_AF24 -to SGNL[10] -comment GPIO_14
+set_location_assignment PIN_AE21 -to SGNL[11] -comment GPIO_15
+set_location_assignment PIN_AF25 -to SGNL[12] -comment GPIO_16
+set_location_assignment PIN_AC22 -to SGNL[13] -comment GPIO_17
+set_location_assignment PIN_AE22 -to SGNL[14] -comment GPIO_18
+set_location_assignment PIN_AF21 -to SGNL[15] -comment GPIO_19
+set_location_assignment PIN_AF22 -to SGNL[16] -comment GPIO_20
+set_location_assignment PIN_AD22 -to SGNL[17] -comment GPIO_21
+set_location_assignment PIN_AG25 -to SGNL[18] -comment GPIO_22
+set_location_assignment PIN_AD25 -to SGNL[19] -comment GPIO_23
+set_location_assignment PIN_AH25 -to SGNL[20] -comment GPIO_24
+set_location_assignment PIN_AE25 -to SGNL[21] -comment GPIO_25
+set_location_assignment PIN_AG22 -to SGNL[22] -comment GPIO_26
+set_location_assignment PIN_AE24 -to SGNL[23] -comment GPIO_27
+set_location_assignment PIN_AH22 -to SGNL[24] -comment GPIO_28
+set_location_assignment PIN_AF26 -to SGNL[25] -comment GPIO_29
+set_location_assignment PIN_AE20 -to SGNL[26] -comment GPIO_30
+set_location_assignment PIN_AG23 -to SGNL[27] -comment GPIO_31
+set_location_assignment PIN_AF20 -to SGNL[28] -comment GPIO_32
+set_location_assignment PIN_AH26 -to SGNL[29] -comment GPIO_33
+set_location_assignment PIN_AH23 -to SGNL[30] -comment GPIO_34
+set_location_assignment PIN_AG26 -to SGNL[31] -comment GPIO_35
+set_location_assignment PIN_AD28 -to SGNL[32] -comment HSMC_CLKOUT0
+set_location_assignment PIN_H23 -to SGNL[33] -comment HSMC_TX_P7
+set_location_assignment PIN_H24 -to SGNL[34] -comment HSMC_TX_N7
+set_location_assignment PIN_K26 -to SGNL[35] -comment HSMC_RX_N5
+set_location_assignment PIN_K25 -to SGNL[36] -comment HSMC_RX_P5
+set_location_assignment PIN_J23 -to SGNL[37] -comment HSMC_TX_P8
+set_location_assignment PIN_J24 -to SGNL[38] -comment HSMC_TX_N8
+set_location_assignment PIN_R25 -to SGNL[39] -comment HSMC_RX_P8
+set_location_assignment PIN_R26 -to SGNL[40] -comment HSMC_RX_N8
+set_location_assignment PIN_D27 -to SGNL[41] -comment HSMC_TX_P0
+set_location_assignment PIN_E27 -to SGNL[42] -comment HSMC_TX_P1
+set_location_assignment PIN_D28 -to SGNL[43] -comment HSMC_TX_N0
+set_location_assignment PIN_E28 -to SGNL[44] -comment HSMC_TX_N1
+set_location_assignment PIN_F27 -to SGNL[45] -comment HSMC_TX_P2
+set_location_assignment PIN_F28 -to SGNL[46] -comment HSMC_TX_N2
+set_location_assignment PIN_G28 -to SGNL[47] -comment HSMC_TX_N3
+set_location_assignment PIN_G27 -to SGNL[48] -comment HSMC_TX_P3
+set_location_assignment PIN_K28 -to SGNL[49] -comment HSMC_TX_N4
+set_location_assignment PIN_M27 -to SGNL[52] -comment HSMC_TX_P5
+set_location_assignment PIN_G23 -to SGNL[53] -comment HSMC_CLKOUT_P1
+set_location_assignment PIN_K21 -to SGNL[54] -comment HSMC_TX_P6
+set_location_assignment PIN_AF27 -to SGNL[58] -comment HSMC_D3
+set_location_assignment PIN_F24 -to SGNL[59] -comment HSMC_RX_P0
+set_location_assignment PIN_D26 -to SGNL[60] -comment HSMC_RX_P1
+set_location_assignment PIN_F25 -to SGNL[61] -comment HSMC_RX_N0
+set_location_assignment PIN_C27 -to SGNL[62] -comment HSMC_RX_N1
+set_location_assignment PIN_F26 -to SGNL[63] -comment HSMC_RX_P2
+set_location_assignment PIN_E26 -to SGNL[64] -comment HSMC_RX_N2
+set_location_assignment PIN_G25 -to SGNL[65] -comment HSMC_RX_P3
+set_location_assignment PIN_H25 -to SGNL[66] -comment HSMC_RX_P4
+set_location_assignment PIN_G26 -to SGNL[67] -comment HSMC_RX_N3
+set_location_assignment PIN_H26 -to SGNL[68] -comment HSMC_RX_N4
+set_location_assignment PIN_L23 -to SGNL[69] -comment HSMC_RX_P6
+set_location_assignment PIN_M25 -to SGNL[70] -comment HSMC_RX_P7
+set_location_assignment PIN_L24 -to SGNL[71] -comment HSMC_RX_N6
+set_location_assignment PIN_M26 -to SGNL[72] -comment HSMC_RX_N7
+set_location_assignment PIN_J25 -to SGNL[74] -comment HSMC_TX_P10
+set_location_assignment PIN_L27 -to SGNL[75] -comment HSMC_TX_P11
+set_location_assignment PIN_J26 -to SGNL[76] -comment HSMC_TX_N10
+set_location_assignment PIN_L28 -to SGNL[77] -comment HSMC_TX_N11
+set_location_assignment PIN_R27 -to SGNL[78] -comment HSMC_TX_P13
+set_location_assignment PIN_R28 -to SGNL[80] -comment HSMC_TX_N13
+set_location_assignment PIN_U28 -to SGNL[81] -comment HSMC_TX_N14
+set_location_assignment PIN_V27 -to SGNL[82] -comment HSMC_TX_P15
+set_location_assignment PIN_V28 -to SGNL[83] -comment HSMC_TX_N15
+set_location_assignment PIN_V24 -to SGNL[86] -comment HSMC_CLKOUTN2
+set_location_assignment PIN_V22 -to SGNL[87] -comment HSMC_TX_N16
+set_location_assignment PIN_T25 -to SGNL[88] -comment HSMC_RX_P9
+set_location_assignment PIN_T26 -to SGNL[89] -comment HSMC_RX_N9
+set_location_assignment PIN_U25 -to SGNL[90] -comment HSMC_RX_P10
+set_location_assignment PIN_L21 -to SGNL[91] -comment HSMC_RX_P11
+set_location_assignment PIN_U26 -to SGNL[92] -comment HSMC_RX_N10
+set_location_assignment PIN_L22 -to SGNL[93] -comment HSMC_RX_N11
+set_location_assignment PIN_N25 -to SGNL[94] -comment HSMC_RX_P12
+set_location_assignment PIN_N26 -to SGNL[95] -comment HSMC_RX_N12
+set_location_assignment PIN_P25 -to SGNL[96] -comment HSMC_RX_P13
+set_location_assignment PIN_P21 -to SGNL[97] -comment HSMC_RX_P14
+set_location_assignment PIN_P26 -to SGNL[98] -comment HSMC_RX_N13
+set_location_assignment PIN_R21 -to SGNL[99] -comment HSMC_RX_N14
+set_location_assignment PIN_R22 -to SGNL[100] -comment HSMC_RX_P15
+set_location_assignment PIN_T21 -to SGNL[101] -comment HSMC_RX_P16
+set_location_assignment PIN_R23 -to SGNL[102] -comment HSMC_RX_N15
+set_location_assignment PIN_T22 -to SGNL[103] -comment HSMC_RX_N16
+set_location_assignment PIN_AC21 -to SGNL[0] -comment GPIO_4
+set_location_assignment PIN_U27 -to SGNL[79] -comment HSMC_TX_P14
+set_location_assignment PIN_V23 -to SGNL[84] -comment HSMC_CLKOUTP2
+set_location_assignment PIN_U22 -to SGNL[85] -comment HSMC_TX_P16
+set_location_assignment PIN_K27 -to SGNL[50] -comment HSMC_TX_P4
+set_location_assignment PIN_M28 -to SGNL[51] -comment HSMC_TX_N5
+set_location_assignment PIN_G24 -to SGNL[55] -comment HSMC_CLKOUT_N1
+set_location_assignment PIN_K22 -to SGNL[56] -comment HSMC_TX_N6
+set_location_assignment PIN_AE28 -to SGNL[57] -comment HSMC_D1
+set_location_assignment PIN_P27 -to SGNL[73] -comment HSMC_TX_P9
+set_global_assignment -name EDA_NETLIST_WRITER_OUTPUT_DIR /home/project.local.srisa.ru/sultanov_ia/dk_work/AVC1READER -section_id eda_simulation
+set_global_assignment -name EDA_RUN_TOOL_AUTOMATICALLY OFF -section_id eda_simulation
+set_global_assignment -name VERILOG_TEST_BENCH_FILE AVC1READER.vt
+set_global_assignment -name VERILOG_TEST_BENCH_FILE AVC1READER_old.vt
+set_global_assignment -name VERILOG_FILE SD/sdpktrom.v
+set_global_assignment -name HEX_FILE SD/sdcrom.hex
+set_global_assignment -name VERILOG_FILE AVC/vectorbuf.v
+set_global_assignment -name VERILOG_FILE AVC/signnum.v
+set_global_assignment -name VERILOG_FILE AVC/sgnlbuf.v
+set_global_assignment -name VERILOG_FILE STR/atoi3mult10.v
+set_global_assignment -name VERILOG_FILE STR/atoi3mult100.v
+set_global_assignment -name VERILOG_FILE AVC/avcheader.v
+set_global_assignment -name VERILOG_FILE USER/userled.v
+set_global_assignment -name VERILOG_FILE AVC1READER.v
+set_global_assignment -name VERILOG_FILE USER/userctrl.v
+set_global_assignment -name VERILOG_FILE STR/itoarom.v
+set_global_assignment -name VERILOG_FILE STR/itoa32.v
+set_global_assignment -name VERILOG_FILE SD/sdmemaddr.v
+set_global_assignment -name VERILOG_FILE SD/sdctrl.v
+set_global_assignment -name VERILOG_FILE SD/sdcrom.v
+set_global_assignment -name VERILOG_FILE PLL/altpll1.v
+set_global_assignment -name VERILOG_FILE MBR/mbrctrl.v
+set_global_assignment -name VERILOG_FILE LINE/tsctrl.v
+set_global_assignment -name VERILOG_FILE FAT32/fat32ctrl.v
+set_global_assignment -name VERILOG_FILE FAT/fatsram.v
+set_global_assignment -name VERILOG_FILE FAT/fatctrl.v
+set_global_assignment -name VERILOG_FILE ERCY/ercyctrl.v
+set_global_assignment -name VERILOG_FILE DATA/datatx.v
+set_global_assignment -name VERILOG_FILE DATA/datarx.v
+set_global_assignment -name VERILOG_FILE DATA/datactrl.v
+set_global_assignment -name VERILOG_FILE CRC/crc16.v
+set_global_assignment -name VERILOG_FILE CRC/crc7.v
+set_global_assignment -name VERILOG_FILE CMD/cmdtx.v
+set_global_assignment -name VERILOG_FILE CMD/cmdrx.v
+set_global_assignment -name VERILOG_FILE CMD/cmdnum.v
+set_global_assignment -name VERILOG_FILE CMD/cmdmux.v
+set_global_assignment -name VERILOG_FILE CMD/cmdctrl.v
+set_global_assignment -name VERILOG_FILE AVC/avcparser.v
+set_global_assignment -name VERILOG_FILE AVC/avcctrl.v
+set_global_assignment -name VERILOG_FILE Arithmetic/multiply2.v
+set_global_assignment -name VERILOG_FILE Arithmetic/divide2.v
+set_global_assignment -name SDC_FILE AVC1READER.sdc
+set_global_assignment -name VERILOG_FILE USER/user7seg.v
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2.stp
+set_global_assignment -name VERILOG_FILE USER/userlcd.v
+set_global_assignment -name VERILOG_FILE USER/userdebug.v
+set_global_assignment -name VERILOG_FILE AVC/avchdrhdlr.v
+set_global_assignment -name VERILOG_FILE STR/atoi3.v
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH AVC1READER -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME AVC1READER -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id AVC1READER
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME AVC1READER -section_id AVC1READER
+set_global_assignment -name EDA_TEST_BENCH_FILE AVC1READER.vt -section_id AVC1READER
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
