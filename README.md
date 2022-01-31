@@ -41,6 +41,11 @@
 
 **Более подробное описание тестера AVC1READER находится в папке Documentation**
 
+**Фото мини-тестера AVC1READER с подключенной платой с тестируемым проектом:**
+
+![](/README.images/26.JPG)
+![](/README.images/27.JPG)
+
 **Видео с примерами работы тестера:**
 
 [![Watch the video](https://img.youtube.com/vi/sAIZYMB3Xlo/maxresdefault.jpg)](https://youtu.be/sAIZYMB3Xlo)
