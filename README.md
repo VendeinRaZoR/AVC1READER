@@ -49,3 +49,5 @@
 **Видео с примерами работы тестера:**
 
 [![Watch the video](https://img.youtube.com/vi/sAIZYMB3Xlo/maxresdefault.jpg)](https://youtu.be/sAIZYMB3Xlo)
+
+[![Watch the video](https://img.youtube.com/vi/MAJFpPcSwu8/maxresdefault.jpg)](https://youtu.be/MAJFpPcSwu8)
